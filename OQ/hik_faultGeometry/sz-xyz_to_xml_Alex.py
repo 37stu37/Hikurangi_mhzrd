@@ -18,7 +18,7 @@ the subduction zone in OpenQuake. Data must be in format: Lon, Lat, depth.
 
 Only works for one source at a time right now
 """
-
+#%%
 import os
 from lxml import etree
 import pandas as pd
@@ -37,11 +37,11 @@ out_file = sz + '-' + contour_differentiator + '-revised_geom_Alex' +'.xml'
 hik_attr = ['a_value', 'b_value', 'minMag', 'maxMag', 'topDep', 'bottomDep', 'cornerpoints']
 # a_value, b_value, minMag, maxMag, mag, occur_rate, lon/lat/dep cornerpoints list (upper north, upper south, lower north, lower south)
 hik_src = ['Interface']
-hik_dict = {'Interface': [0.4, 0.7, 6.5, 9.0, 0.00017241379310344826, 5, 24, [(179.735, -37.713), (175.388, -42.118), (178.657, -37.060), (174.240, -41.464)]]}
+hik_dict = {'Interface': [0.4, 0.7, 6.5, 9.0, 4, 50, [(179.735, -37.713), (175.388, -42.118), (178.657, -37.060), (174.240, -41.464)]]}
 
 
 hik_df = pd.DataFrame(hik_dict, index=hik_attr)
-hik_df
+
 #declare variables
 depth_list = []
 file_list = []
@@ -233,7 +233,7 @@ def src2nrml(sz, hik_df, depth_list, out_file):
 
         # intermediate edges
         for d in depth_list[top_ix+1:bottom_ix]:
-            cfie = etree.SubElement(cfg, 'intermediateEdge')
+            cfie = etree.SubElement(cfbe, 'intermediateEdge')
             gmlLS = etree.SubElement(cfie, '{%s}LineString' % gml_ns)
             gmlPos = etree.SubElement(gmlLS, '{%s}posList' % gml_ns)
             intCoords = hik_df.loc[d][i]
@@ -241,7 +241,7 @@ def src2nrml(sz, hik_df, depth_list, out_file):
             gmlPos.text = ' '.join([str("%.3f" % x) for x in int_cont])
 
         # bottom edge
-        cfbe = etree.SubElement(cfg, 'faultBottomEdge')
+        cfbe = etree.SubElement(cfbe, 'faultBottomEdge')
         gmlLS = etree.SubElement(cfbe, '{%s}LineString' % gml_ns)
         gmlPos = etree.SubElement(gmlLS, '{%s}posList' % gml_ns)
         bottomCoords = hik_df.loc[depth_list[bottom_ix]][i]
@@ -254,7 +254,7 @@ def src2nrml(sz, hik_df, depth_list, out_file):
             # TGR = truncated Guntenberg Richter parameters
             # rake
         MSR= etree.SubElement(fS, 'magScaleRel')
-        MSR.text = '%s' % WC1994
+        MSR.text = 'WC1994'
 
         RAR= etree.SubElement(fS, 'ruptAspectRatio')
         RAR.text = '%s' % 1.5
