@@ -34,7 +34,7 @@ out_file = sz + '-' + contour_differentiator + '-revised_geom_Alex' +'.xml'
 
 #%%
 #sz parameters by 2010 segment:
-hik_attr = ['a_value', 'b_value', 'minMag', 'maxMag', 'topDep', 'bottomDep', 'cornerpoints']
+hik_attr = ['aValue', 'bValue', 'minMag', 'maxMag', 'topDep', 'bottomDep', 'cornerpoints']
 # a_value, b_value, minMag, maxMag, mag, occur_rate, lon/lat/dep cornerpoints list (upper north, upper south, lower north, lower south)
 hik_src = ['Interface']
 hik_dict = {'Interface': [0.4, 0.7, 6.5, 9.0, 4, 50, [(179.735, -37.713), (175.388, -42.118), (178.657, -37.060), (174.240, -41.464)]]}
@@ -282,6 +282,8 @@ if __name__ == "__main__":
     sz_conts_dict = createSZdict(sorted_file_list, depth_list)
     hik_df = hikSources(hik_df, sz_conts_dict, hik_src)
 
-    # src2nrml(sz, hik_df, depth_list, out_file)
+    src2nrml(sz, hik_df, depth_list, out_file)
 
     print("finished!")
+
+# %%
