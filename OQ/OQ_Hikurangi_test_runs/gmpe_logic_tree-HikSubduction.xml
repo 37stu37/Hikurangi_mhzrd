@@ -2,31 +2,6 @@
 <nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
     <logicTree logicTreeID="lt1">
 
-        <logicTreeBranchingLevel branchingLevelID="bl1">
-            <logicTreeBranchSet uncertaintyType="gmpeModel" branchSetID="bs1" applyToTectonicRegionType="Active Shallow Crust">
-
-                <logicTreeBranch branchID="AbM">
- <uncertaintyModel>AbrahamsonEtAl2014</uncertaintyModel>
-                    <uncertaintyWeight>1.0</uncertaintyWeight>
-                </logicTreeBranch>
-
-            </logicTreeBranchSet>
-        </logicTreeBranchingLevel>
-
-        <logicTreeBranchingLevel branchingLevelID="bl2">
-            <logicTreeBranchSet uncertaintyType="gmpeModel" branchSetID="bs2"
-                    applyToTectonicRegionType="Volcanic">
-                <logicTreeBranch branchID="b1">
- <uncertaintyModel>Bradley2013Volc</uncertaintyModel>
-                    <uncertaintyWeight>0.5</uncertaintyWeight>
-                </logicTreeBranch>
-                <logicTreeBranch branchID="b2">
- <uncertaintyModel>McVerry2006Volc</uncertaintyModel>
-                    <uncertaintyWeight>0.5</uncertaintyWeight>
-                </logicTreeBranch>		
-            </logicTreeBranchSet>
-        </logicTreeBranchingLevel>
-
         <logicTreeBranchingLevel branchingLevelID="bl3">
             <logicTreeBranchSet uncertaintyType="gmpeModel" branchSetID="bs3"
                     applyToTectonicRegionType="Subduction Interface">
