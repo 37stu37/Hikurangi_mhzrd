@@ -24,7 +24,8 @@ from lxml import etree
 import pandas as pd
 from shapely.geometry import Polygon, Point
 
-os.chdir('F:\Dropbox\Work\Repository\Hikurangi_mhzrd\OQ\hik_faultGeometry')
+# os.chdir('F:\Dropbox\Work\Repository\Hikurangi_mhzrd\OQ\hik_faultGeometry')
+os.chdir('/Users/alex/Dropbox/Work/Repository/Hikurangi_mhzrd/OQ/hik_faultGeometry')
 
 sz = 'hik'
 in_directory = '../for_liz2'
@@ -222,7 +223,7 @@ def src2nrml(sz, hik_df, depth_list, out_file):
         cfbe = etree.SubElement(fS, 'complexFaultGeometry')
 
         # top edge
-        cfte = etree.SubElement(fS, 'faultTopEdge')
+        cfte = etree.SubElement(cfbe, 'faultTopEdge')
         gmlLS = etree.SubElement(cfte, '{%s}LineString' % gml_ns)
         gmlPos = etree.SubElement(gmlLS, '{%s}posList' % gml_ns)
 
