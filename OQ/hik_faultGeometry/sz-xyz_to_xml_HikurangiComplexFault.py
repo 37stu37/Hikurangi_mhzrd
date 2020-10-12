@@ -25,20 +25,20 @@ import pandas as pd
 from shapely.geometry import Polygon, Point
 
 # os.chdir('F:\Dropbox\Work\Repository\Hikurangi_mhzrd\OQ\hik_faultGeometry')
-os.chdir('/Users/alex/Dropbox/Work/Repository/Hikurangi_mhzrd/OQ/hik_faultGeometry')
+os.chdir('/Users/alex/Dropbox/Work/Repository/Hikurangi_mhzrd/OQ/OQ_Hikurangi_test_runs')
 
-sz = 'hik'
+sz = 'source_model_hik'
 in_directory = '../for_liz2'
 out_directory = '.'
 contour_differentiator = 'current' #'current'
-out_file = sz + '-' + contour_differentiator + '-revised_geom_Alex' +'.xml'
+out_file = sz + '-' + contour_differentiator + '-geom_Alex' +'.xml'
 
 #%%
 #sz parameters by 2010 segment:
 hik_attr = ['aValue', 'bValue', 'minMag', 'maxMag', 'topDep', 'bottomDep', 'cornerpoints']
 # a_value, b_value, minMag, maxMag, mag, occur_rate, lon/lat/dep cornerpoints list (upper north, upper south, lower north, lower south)
-hik_src = ['Interface']
-hik_dict = {'Interface': [0.4, 0.7, 6.5, 9.0, 4, 50, [(179.735, -37.713), (175.388, -42.118), (178.657, -37.060), (174.240, -41.464)]]}
+hik_src = ['Complex Fault Source']
+hik_dict = {'Complex Fault Source': [0.4, 0.7, 6.5, 9.0, 4, 50, [(179.735, -37.713), (175.388, -42.118), (178.657, -37.060), (174.240, -41.464)]]}
 
 
 hik_df = pd.DataFrame(hik_dict, index=hik_attr)
