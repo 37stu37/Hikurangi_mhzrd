@@ -2,7 +2,7 @@
 <nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
   <!--source_model_hik sz sources from contour files-->
   <sourceModel name="Seismic Source Model">
-    <complexFaultSource id="0" name="source_model_hikComplex Fault Source" tectonicRegion="Subduction Interface">
+    <complexFaultSource id="0" name="Complex Fault Source" tectonicRegion="Subduction Interface">
       <complexFaultGeometry>
         <faultTopEdge>
           <gml:LineString>
@@ -112,8 +112,8 @@
       </complexFaultGeometry>
       <magScaleRel>WC1994</magScaleRel>
       <ruptAspectRatio>1.5</ruptAspectRatio>
-      <truncGutenbergRichterMFD aValue="2.0" bValue="0.7" minMag="6.5" maxMag="9.0"/>
-      <rake>90</rake>
+      <truncGutenbergRichterMFD aValue="2" bValue="0.7" minMag="6.5" maxMag="9.0"/>
+      <rake>30</rake>
     </complexFaultSource>
   </sourceModel>
 </nrml>
