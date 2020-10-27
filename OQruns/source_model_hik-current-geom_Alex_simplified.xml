@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
+  <!--source_model_hik sz sources from contour files-->
+  <sourceModel name="Seismic Source Model">
+    <complexFaultSource id="0" name="Complex Fault Source" tectonicRegion="Subduction Interface">
+      <complexFaultGeometry>
+        <faultTopEdge>
+          <gml:LineString>
+            <gml:posList>	
+                179.929654	-37.590000  5.000000	
+                179.925000	-37.588878  5.000000	
+                179.920000	-37.587652  5.000000	
+            </gml:posList>
+          </gml:LineString>
+        </faultTopEdge>
+        <intermediateEdge>
+          <gml:LineString>
+            <gml:posList>
+                173.315000	-43.219740  20.000000
+                173.310000	-43.218529  20.000000
+                173.305000	-43.217287  20.000000
+            </gml:posList>
+          </gml:LineString>
+        </intermediateEdge>
+        <faultBottomEdge>
+          <gml:LineString>
+            <gml:posList>
+                171.495000	-42.955920  50.000000
+                171.496554	-42.955000  50.000000
+                171.500000	-42.952964  50.000000
+            </gml:posList>
+          </gml:LineString>
+        </faultBottomEdge>
+      </complexFaultGeometry>
+      <magScaleRel>WC1994</magScaleRel>
+      <ruptAspectRatio>1.5</ruptAspectRatio>
+      <truncGutenbergRichterMFD aValue="2" bValue="0.7" minMag="6.5" maxMag="9.0"/>
+      <rake>30.0</rake>
+    </complexFaultSource>
+  </sourceModel>
+</nrml>
