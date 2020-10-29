@@ -7,27 +7,27 @@
         <faultTopEdge>
           <gml:LineString>
             <gml:posList>	
-                179.929654	-37.590000  5.000000	
-                179.925000	-37.588878  5.000000	
-                179.920000	-37.587652  5.000000	
+                179.720	-37.549	5.7
+                177.661	-41.082	4.28
+                172.533	-43.655	28.24
             </gml:posList>
           </gml:LineString>
         </faultTopEdge>
         <intermediateEdge>
           <gml:LineString>
             <gml:posList>
-                173.315000	-43.219740  20.000000
-                173.310000	-43.218529  20.000000
-                173.305000	-43.217287  20.000000
+                179.202	-37.163  14.658
+                175.084	-41.268  20.268
+                171.829	-43.181  35.685
             </gml:posList>
           </gml:LineString>
         </intermediateEdge>
         <faultBottomEdge>
           <gml:LineString>
             <gml:posList>
-                171.495000	-42.955920  50.000000
-                171.496554	-42.955000  50.000000
-                171.500000	-42.952964  50.000000
+                177.249	-36.193  301.38
+                174.194	-39.050  273.0
+                171.019	-42.490  182.0
             </gml:posList>
           </gml:LineString>
         </faultBottomEdge>
