@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
+  <!--source_model_hik sz sources from contour files-->
+  <sourceModel name="Seismic Source Model">
+    <complexFaultSource id="0" name="Complex Fault Source" tectonicRegion="Subduction Interface">
+      <complexFaultGeometry>
+        <faultTopEdge>
+          <gml:LineString>
+            <gml:posList>
+                179.500000	-37.500000	7.248994
+                179.000000	-38.500000	4.461857
+                178.500000	-40.000000	3.146707
+                178.000000	-40.800000	3.5
+                177.000000	-41.500000	5.229210
+                175.500000	-42.000000	4.253374
+                173.000000	-43.500000	25.219366
+                172.496210	-43.800109	30.5666
+            </gml:posList>
+          </gml:LineString>
+        </faultTopEdge>
+
+        <intermediateEdge>
+          <gml:LineString>
+            <gml:posList>
+                178.495000	-36.821803	50.000000
+                178.065000	-37.093557	50.000000
+                177.731868	-37.565000	50.000000
+                177.596392	-37.865000	50.000000
+                177.093193	-38.360000	50.000000
+                177.090000	-38.363775	50.000000
+                176.135000	-39.245362	50.000000
+                175.185000	-40.101746	50.000000
+                174.424958	-40.600000	50.000000
+                174.010000	-41.119005	50.000000
+                172.735000	-42.262181	50.000000
+                171.495000	-42.955920	50.000000
+            </gml:posList>
+          </gml:LineString>
+        </intermediateEdge>
+
+        <faultBottomEdge>
+          <gml:LineString>
+            <gml:posList>
+                177.000000	-36.500000	324.871490
+                174.000000	-39.000000	305.785370
+                172.500000	-40.500000	295.916992
+                171.000000	-42.500000	182.739807
+            </gml:posList>
+          </gml:LineString>
+        </faultBottomEdge>
+      </complexFaultGeometry>
+      <magScaleRel>WC1994</magScaleRel>
+      <ruptAspectRatio>1.5</ruptAspectRatio>
+      <truncGutenbergRichterMFD aValue="2" bValue="0.7" minMag="6.5" maxMag="9.0"/>
+      <rake>30.0</rake>
+    </complexFaultSource>
+  </sourceModel>
+</nrml>
