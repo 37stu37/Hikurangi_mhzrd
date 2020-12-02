@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\..\\BigData_more100MB\\Hikurangi"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true,
+		"python.pythonPath": "C:\\Users\\alexd\\Miniconda3\\envs\\OQ\\python.exe"
+	}
+}
