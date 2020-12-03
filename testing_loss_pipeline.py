@@ -72,8 +72,8 @@ plt.close()
 
 #%%
 fig, axes = plt.subplots(nrows=1,ncols=1, figsize=(9,5))
-axes.hist(np.flatten(RV_eq), alpha=0.5, color="r", label='losses Earthquake')
-axes.hist(RV_eq_ts.mean(axis=1), alpha=0.5, color="b", label='losses Earthquake and Tsunamis')
+axes.hist(RV_eq.flatten(), alpha=0.5, color="r", label='losses Earthquake')
+axes.hist(RV_eq_ts.flatten(), alpha=0.5, color="b", label='losses Earthquake and Tsunamis')
 axes.set_xlabel('Losses')
 axes.set_ylabel('Count')
 plt.legend()
@@ -81,6 +81,7 @@ plt.show()
 plt.close()
 
 
+#%%
 # Jose reduction in Damage ratios
 ## Dr from Earthquake
 Dr_combined_capped = np.where(Dr_PGA_uncertainty > Dr_Wdepth_uncertainty, Dr_PGA_uncertainty, Dr_Wdepth_uncertainty-Dr_PGA_uncertainty) # use mask value as min Dr2 = max Dr1 np.where ?
