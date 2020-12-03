@@ -33,18 +33,10 @@ mu, sigma=0.281424, 0.78294657
 Dr_Wdepth =  0.5*(special.erfc((-(np.log(WDepths)-mu)/(sigma*np.sqrt(2)))))
 Dr_Wdepth_uncertainty = np.array([np.random.normal(loc=x, scale=sigma_uncertainty, size=sampling_size) for x in Dr_Wdepth])
 # error bars (assuming non symetry)
-residual_PGA_dr = np.vstack(((Dr_PGA-Dr_PGA_uncertainty.min(axis=1)), (Dr_PGA_uncertainty.max(axis=1) - Dr_PGA)))
-residual_Wdepth_dr = np.vstack(((Dr_Wdepth-Dr_Wdepth_uncertainty.min(axis=1)), (Dr_Wdepth_uncertainty.max(axis=1) - Dr_Wdepth)))
-
-#%%
-fig, axes = plt.subplots(nrows=1,ncols=2, figsize=(8,5))
-axes[0].errorbar(PGAs, Dr_PGA, residual_PGA_dr, fmt='.r',label='PGA damage ratio', errorevery=1)
-axes[1].errorbar(WDepths, Dr_Wdepth, residual_Wdepth_dr, fmt='.b', label='Water depths damage ratio', errorevery=1)
-axes[0].legend()
-axes[1].legend()
-plt.tight_layout()
-plt.show()
-plt.close()
+residual_PGA_dr = Dr_PGA_uncertainty.max(axis=1) -  Dr_PGA_uncertainty.mean(axis=1)
+residual_Wdepth_dr = Dr_Wdepth_uncertainty.max(axis=1) -  Dr_Wdepth_uncertainty.mean(axis=1)
+# residual_PGA_dr = np.vstack(((Dr_PGA-Dr_PGA_uncertainty.min(axis=1)), (Dr_PGA_uncertainty.max(axis=1) - Dr_PGA)))
+# residual_Wdepth_dr = np.vstack(((Dr_Wdepth-Dr_Wdepth_uncertainty.min(axis=1)), (Dr_Wdepth_uncertainty.max(axis=1) - Dr_Wdepth)))
 
 #%%
 # Alex reduction in Replacement Value
@@ -52,28 +44,46 @@ plt.close()
 RV_eq = RV[:,None] * Dr_PGA_uncertainty
 RV_eq_ts = (RV[:,None] - RV_eq) * Dr_Wdepth_uncertainty # cascade
 
-# error bars (assuming non symetry)
-residual_RV_eq = np.vstack(((RV_eq.mean(axis=1)-RV_eq.min(axis=1)), (RV_eq.max(axis=1)-RV_eq.mean(axis=1))))
-residual_RV_eq_ts = np.vstack(((RV_eq_ts.mean(axis=1)-RV_eq_ts.min(axis=1)), (RV_eq_ts.max(axis=1)-RV_eq_ts.mean(axis=1))))
+# Jose's combined Dr
+Dr_combined_capped = np.where(Dr_PGA_uncertainty > Dr_Wdepth_uncertainty, Dr_PGA_uncertainty, Dr_Wdepth_uncertainty-Dr_PGA_uncertainty)
+residual_Dr_combined = Dr_combined_capped.max(axis=1) - Dr_combined_capped.mean(axis=1)
+RV_combined = RV[:,None] * Dr_combined_capped
+
+# Max value - Christina
+Dr_combined_max = np.where(Dr_PGA_uncertainty > Dr_Wdepth_uncertainty, Dr_PGA_uncertainty, Dr_Wdepth_uncertainty)
+residual_Dr_max = Dr_combined_max.max(axis=1) - Dr_combined_max.mean(axis=1)
+RV_max = RV[:,None] * Dr_combined_max
 
 #%%
-fig, axes = plt.subplots(nrows=1,ncols=2, figsize=(9,5))
-axes[0].errorbar(PGAs, RV_eq.mean(axis=1), residual_RV_eq, fmt='.r',label='losses Earthquake', errorevery=1)
-axes[1].errorbar(WDepths, RV_eq.mean(axis=1), residual_RV_eq_ts, fmt='.b', label='losses Earthquake and Tsunamis', errorevery=1)
-axes[0].set_xlabel('PGA (g)')
-axes[1].set_xlabel('Water Depth (m)')
-axes[0].legend()
-axes[1].legend()
-axes[0].set_ylabel('Losses')
-plt.legend()
+# Dr plot
+fig, axes = plt.subplots(nrows=3,ncols=3, figsize=(12,8))
+axes[0,0].errorbar(PGAs, Dr_PGA_uncertainty.mean(axis=1), residual_PGA_dr, fmt='.r',label='PGA damage ratio', errorevery=1)
+axes[0,1].errorbar(WDepths, Dr_Wdepth_uncertainty.mean(axis=1), residual_Wdepth_dr, fmt='.b', label='Water depths damage ratio', errorevery=1)
+axes[1,2].hist(np.concatenate(Dr_PGA_uncertainty, Dr_Wdepth_uncertainty).flatten(), color='b', label='Combined damage ratio - capped')
+axes[1,0].errorbar(PGAs, Dr_PGA_uncertainty.mean(axis=1), residual_PGA_dr, fmt='.r',label='PGA damage ratio', errorevery=1)
+axes[1,1].errorbar(WDepths, Dr_combined_capped.mean(axis=1), residual_Dr_combined, fmt='.g', label='Combined damage ratio - capped', errorevery=1)
+axes[1,2].hist(Dr_combined_capped.flatten(), color='b', label='Combined damage ratio - capped')
+axes[2,0].errorbar(PGAs, Dr_PGA_uncertainty.mean(axis=1), residual_PGA_dr, fmt='.r',label='PGA damage ratio', errorevery=1)
+axes[2,1].errorbar(WDepths, Dr_combined_max.mean(axis=1), residual_Dr_max, fmt='.g', label='Combined damage ratio - max', errorevery=1)
+axes[2,2].hist(Dr_combined_max.flatten(), color='b', label='Combined damage ratio - max')
+axes[0,0].legend(framealpha=1, frameon=True, loc='upper left')
+axes[0,1].legend(framealpha=1, frameon=True, loc='lower right')
+axes[1,0].legend(framealpha=1, frameon=True, loc='upper left')
+axes[1,1].legend(framealpha=1, frameon=True, loc='lower right')
+axes[2,0].legend(framealpha=1, frameon=True, loc='upper left')
+axes[2,1].legend(framealpha=1, frameon=True, loc='lower right')
+
 plt.tight_layout()
 plt.show()
 plt.close()
 
 #%%
+# Losses plot
 fig, axes = plt.subplots(nrows=1,ncols=1, figsize=(9,5))
-axes.hist(RV_eq.flatten(), alpha=0.5, color="r", label='losses Earthquake')
-axes.hist(RV_eq_ts.flatten(), alpha=0.5, color="b", label='losses Earthquake and Tsunamis')
+# axes.hist(RV_eq.flatten(), alpha=0.3, color="r", label='losses Earthquake')
+axes.hist(RV_eq_ts.flatten(), alpha=0.3, color="b", label='losses Earthquake and Tsunamis - loss pipeline')
+axes.hist(RV_combined.flatten(), alpha=0.3, color="g", label='losses Earthquake and Tsunamis - Dr combined')
+axes.hist(RV_max.flatten(), alpha=0.3, color="y", label='losses Earthquake and Tsunamis - Dr max')
 axes.set_xlabel('Losses')
 axes.set_ylabel('Count')
 plt.legend()
