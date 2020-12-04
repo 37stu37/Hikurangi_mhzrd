@@ -20,10 +20,10 @@ plt.rcParams.update({'font.size': 15})
 
 ## damage ratios -------------------------------------
 #%%
-mu, sigma, sigma_uncertainty, sampling_size =1.2909968, 0.1688, 0.05, 100
-RV = np.linspace(0.01,1e6,sampling_size) # asset value
-PGAs = np.random.uniform(0.01, 5, size=sampling_size)
-WDepths = np.random.uniform(0.01, 10, size=sampling_size)
+mu, sigma, sigma_uncertainty, number_buildings, sampling_size =1.2909968, 0.1688, 0.05, 1000, 1000
+RV = np.linspace(0.01,1e6,number_buildings) # asset value
+PGAs = np.random.uniform(0.01, 5, size=number_buildings)
+WDepths = np.random.uniform(0.01, 10, size=number_buildings)
 
 # Earthquake timber house
 Dr_PGA = 0.5*(special.erfc((-(np.log(PGAs)-mu)/(sigma*np.sqrt(2)))))
@@ -38,6 +38,7 @@ Dr_Wdepth =  0.5*(special.erfc((-(np.log(WDepths)-mu)/(sigma*np.sqrt(2)))))
 Dr_Wdepth_uncertainty = np.array([np.random.normal(loc=x, scale=sigma_uncertainty, size=sampling_size) for x in Dr_Wdepth])
 Dr_Wdepth_uncertainty[Dr_Wdepth_uncertainty<0]=0
 Dr_Wdepth_uncertainty[Dr_Wdepth_uncertainty>1]=1
+residual_Wdepth_dr = Dr_Wdepth_uncertainty.max(axis=1) -  Dr_Wdepth_uncertainty.mean(axis=1)
 # residual_PGA_dr = np.vstack(((Dr_PGA-Dr_PGA_uncertainty.min(axis=1)), (Dr_PGA_uncertainty.max(axis=1) - Dr_PGA)))
 # residual_Wdepth_dr = np.vstack(((Dr_Wdepth-Dr_Wdepth_uncertainty.min(axis=1)), (Dr_Wdepth_uncertainty.max(axis=1) - Dr_Wdepth)))
 
@@ -54,14 +55,13 @@ Dr_combined_max = np.where(Dr_PGA_uncertainty > Dr_Wdepth_uncertainty, Dr_PGA_un
 residual_Dr_max = Dr_combined_max.max(axis=1) - Dr_combined_max.mean(axis=1)
 RV_max = RV[:,None] * Dr_combined_max
 
-#%%
 # Dr plot
 fig, axes = plt.subplots(nrows=3,ncols=3, figsize=(14,8))
 axes[0,0].errorbar(PGAs, Dr_PGA_uncertainty.mean(axis=1), residual_PGA_dr, fmt='.r',label='PGA damage ratio', errorevery=1)
 axes[0,1].errorbar(WDepths, Dr_Wdepth_uncertainty.mean(axis=1), residual_Wdepth_dr, fmt='.b', label='Water depths damage ratio', errorevery=1)
 axes[0,2].hist(np.concatenate((Dr_PGA_uncertainty, Dr_Wdepth_uncertainty)).flatten(), color='black', label='Combined damage ratio - capped')
 axes[1,0].errorbar(PGAs, Dr_PGA_uncertainty.mean(axis=1), residual_PGA_dr, fmt='.r',label='PGA damage ratio', errorevery=1)
-axes[1,1].errorbar(WDepths, Dr_combined_mean.mean(axis=1), np.zeros(100), fmt='.g', label='Combined damage ratio - mean', errorevery=1)
+axes[1,1].errorbar(WDepths, Dr_combined_mean.mean(axis=1), np.zeros(number_buildings), fmt='.g', label='Combined damage ratio - mean', errorevery=1)
 axes[1,2].hist(Dr_combined_mean.flatten(), color='black', label='Combined damage ratio - capped')
 axes[2,0].errorbar(PGAs, Dr_PGA_uncertainty.mean(axis=1), residual_PGA_dr, fmt='.r',label='PGA damage ratio', errorevery=1)
 axes[2,1].errorbar(WDepths, Dr_combined_max.mean(axis=1), residual_Dr_max, fmt='.g', label='Combined damage ratio - max', errorevery=1)

@@ -21,9 +21,9 @@ plt.rcParams.update({'font.size': 15})
 ## damage ratios -------------------------------------
 #%%
 mu, sigma, sigma_uncertainty, sampling_size =1.2909968, 0.1688, 0.05, 100
-RV = np.linspace(0.01,1e6,sampling_size) # asset value
-PGAs = np.random.uniform(0.01, 5, size=sampling_size)
-WDepths = np.random.uniform(0.01, 10, size=sampling_size)
+RV = np.linspace(0.01,1e6,1000) # asset value
+PGAs = np.random.uniform(0.01, 5, 1000)
+WDepths = np.random.uniform(0.01, 10, 1000)
 
 # Earthquake timber house
 Dr_PGA = 0.5*(special.erfc((-(np.log(PGAs)-mu)/(sigma*np.sqrt(2)))))
