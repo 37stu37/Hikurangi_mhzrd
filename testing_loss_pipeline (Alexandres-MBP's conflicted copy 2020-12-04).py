@@ -29,6 +29,7 @@ WDepths = np.random.uniform(0.01, 10, size=sampling_size)
 Dr_PGA = 0.5*(special.erfc((-(np.log(PGAs)-mu)/(sigma*np.sqrt(2)))))
 Dr_PGA_uncertainty = np.array([np.random.normal(loc=x, scale=sigma_uncertainty, size=sampling_size) for x in Dr_PGA])
 Dr_PGA_uncertainty[Dr_PGA_uncertainty<0]=0
+Dr_PGA_uncertainty[Dr_PGA_uncertainty>1]=1
 residual_PGA_dr = Dr_PGA_uncertainty.max(axis=1) -  Dr_PGA_uncertainty.mean(axis=1)
 
 # Tsunami timber house
@@ -36,6 +37,7 @@ mu, sigma=0.281424, 0.78294657
 Dr_Wdepth =  0.5*(special.erfc((-(np.log(WDepths)-mu)/(sigma*np.sqrt(2)))))
 Dr_Wdepth_uncertainty = np.array([np.random.normal(loc=x, scale=sigma_uncertainty, size=sampling_size) for x in Dr_Wdepth])
 Dr_Wdepth_uncertainty[Dr_Wdepth_uncertainty<0]=0
+Dr_Wdepth_uncertainty[Dr_Wdepth_uncertainty>1]=1
 # residual_PGA_dr = np.vstack(((Dr_PGA-Dr_PGA_uncertainty.min(axis=1)), (Dr_PGA_uncertainty.max(axis=1) - Dr_PGA)))
 # residual_Wdepth_dr = np.vstack(((Dr_Wdepth-Dr_Wdepth_uncertainty.min(axis=1)), (Dr_Wdepth_uncertainty.max(axis=1) - Dr_Wdepth)))
 
@@ -79,9 +81,9 @@ plt.close()
 # Losses plot
 fig, axes = plt.subplots(nrows=1,ncols=1, figsize=(9,5))
 # axes.hist(RV_eq.flatten(), alpha=0.3, color="r", label='losses Earthquake')
-axes.hist(RV_eq_ts.flatten(), alpha=0.3, color="b", label='losses Earthquake and Tsunamis - loss pipeline')
-axes.hist(RV_mean.flatten(), alpha=0.3, color="g", label='losses Earthquake and Tsunamis - Dr mean')
-axes.hist(RV_max.flatten(), alpha=0.3, color="y", label='losses Earthquake and Tsunamis - Dr max')
+axes.hist(RV_eq_ts.flatten(), alpha=1, color="b", edgecolor='black', linewidth=2, linestyle=('dashed'), histtype='step', fill=False, label='losses Earthquake and Tsunamis - loss pipeline')
+axes.hist(RV_mean.flatten(), alpha=1, color="g", edgecolor='black', linewidth=2, histtype='step', fill=False, label='losses Earthquake and Tsunamis - Dr mean')
+axes.hist(RV_max.flatten(), alpha=1, color="y", edgecolor='black', linestyle=(':'), linewidth=2, histtype='step', fill=False, label='losses Earthquake and Tsunamis - Dr max')
 axes.set_xlabel('Losses')
 axes.set_ylabel('Count')
 plt.legend()
