@@ -20,7 +20,7 @@ plt.rcParams.update({'font.size': 15})
 
 ## damage ratios -------------------------------------
 #%%
-mu, sigma, sigma_uncertainty, number_buildings, sampling_size =1.2909968, 0.1688, 0.05, 1000, 1000
+mu, sigma, sigma_uncertainty, number_buildings, sampling_size =1.2909968, 0.1688, 0.05, 10000, 1000
 RV = np.linspace(0.01,1e6,number_buildings) # asset value
 PGAs = np.random.uniform(0.01, 5, size=number_buildings)
 WDepths = np.random.uniform(0.01, 10, size=number_buildings)

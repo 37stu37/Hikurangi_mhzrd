@@ -68,7 +68,7 @@
           </gml:LineString>
         </faultBottomEdge>
       </complexFaultGeometry>
-      <magScaleRel>WC1994</magScaleRel>
+      <magScaleRel>StrasserInterface</magScaleRel>
       <ruptAspectRatio>1.5</ruptAspectRatio>
       <truncGutenbergRichterMFD aValue="2" bValue="0.7" minMag="4.5" maxMag="9.0"/>
       <rake>30.0</rake>
