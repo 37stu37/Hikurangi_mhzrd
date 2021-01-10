@@ -3,6 +3,8 @@ calculate the surface rupture from OQ event based PSHA
 '''
 
 #%%
+from rasterio.plot import show
+import contextily as ctx
 import os
 from pathlib import Path
 import pandas as pd
@@ -10,6 +12,9 @@ import numpy as np
 from tqdm import tqdm
 import geopy
 import geopy.distance
+import rasterio as rio
+from rasterio.plot import plotting_extent
+from rasterio.plot import show
 
 import matplotlib.pyplot as plt
 plt.style.reload_library()
@@ -45,7 +50,8 @@ hypocenters = np.array([geopy.Point(y, x) for y,x in zip(lat, lon)])
 # distance to crest in geopy
 distances_to_fault_crest = np.array([geopy.distance.distance(kilometers=d) for d in Dx])
 # bearing from hypocenter to crest centroid
-bearings = np.array(180 - (360 - ruptures['strike']))
+# bearings = np.array(180 - (360 - ruptures['strike']))
+bearings = np.full((283, ), 135)
 # getting centroid crests by translating hypocenters
 fault_crest_centroid = np.array([d.destination(point=p, bearing=s) for d,p,s in zip(distances_to_fault_crest,hypocenters,bearings)])
 
@@ -63,42 +69,32 @@ for idx, value in enumerate(fault_crest_centroid):
 crest_x = np.array(crest_x)
 crest_y = np.array(crest_y)
 crest_z = np.array(Dz)
-#%%
-# import pandas_bokeh
-# pandas_bokeh.output_notebook()
 
-# ruptures_df = pd.DataFrame({'lon': lon, 'lat': lat})
-# crest_df = pd.DataFrame({'lon': crest_x, 'lat': crest_y})
-
-# ruptures_df.plot_bokeh.map(
-#     x="lon",
-#     y="lat",
-#     hovertool_string="""<h2> @{name} </h2> """,
-#     tile_provider="STAMEN_TERRAIN_RETINA", 
-#     figsize=(900, 600),
-#     title="ruptures from Hikurangi margin")
 #%%
-# plotting
+src = rio.open(p.parents[1] / 'faultGeometry' / 'hik_res_0.1.tif')
+
 fig = plt.figure(figsize=(12,6))
 ax0 = fig.add_subplot(1, 1, 1)
 ax0.scatter(lon,lat, c="red", marker='^')
 ax0.scatter(crest_x, crest_y, c='blue')
+# show(src, ax=ax0)
+ctx.add_basemap(ax0, crs=4326)
 # ax0.set_ylim(-40,-39)
-ax0.set_xlim(171, 180)
+# ax0.set_xlim(171, 180)
 plt.tight_layout()
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=None)
 plt.show()
 
-fig = plt.figure(figsize=(12,6))
-ax1 = fig.add_subplot(1, 1, 1, projection='3d')
-ax1.scatter(ruptures['centroid_lon'], ruptures['centroid_lat'], -1*(ruptures['centroid_depth']), c='red', marker='^')
-ax1.scatter(crest_x, crest_y, -1*(crest_z), c='blue')
-ax1.set_xlabel('X')
-ax1.set_ylabel('Y')
-ax1.set_zlabel('Z')
-# rotate the axes and update
-ax1.view_init(30, 45)
-ax1.set_xlim(171, 180)
+# fig = plt.figure(figsize=(12,6))
+# ax1 = fig.add_subplot(1, 1, 1, projection='3d')
+# ax1.scatter(ruptures['centroid_lon'], ruptures['centroid_lat'], -1*(ruptures['centroid_depth']), c='red', marker='^')
+# ax1.scatter(crest_x, crest_y, -1*(crest_z), c='blue')
+# ax1.set_xlabel('X')
+# ax1.set_ylabel('Y')
+# ax1.set_zlabel('Z')
+# # rotate the axes and update
+# ax1.view_init(30, 45)
+# ax1.set_xlim(171, 180)
 
 plt.tight_layout()
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=None)
@@ -106,4 +102,10 @@ plt.show()
 #%%
 crest_df = pd.DataFrame({'lon': crest_x, 'lat': crest_y, 'depth': crest_z, 'mag':ruptures['mag']})
 crest_df.to_csv(p / 'centroid_crest.csv')
+# %%
+ax = plt.subplot(111, projection='polar')
+ax.set_theta_zero_location('N')
+ax.set_theta_direction(-1)  # clockwise
+ax.grid(True)
+plt.show()
 # %%
