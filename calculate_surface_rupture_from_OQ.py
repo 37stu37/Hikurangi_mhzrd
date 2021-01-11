@@ -3,6 +3,7 @@ calculate the surface rupture from OQ event based PSHA
 '''
 
 #%%
+from geopy.point import Point
 from rasterio.plot import show
 import contextily as ctx
 import os
@@ -15,6 +16,7 @@ import geopy.distance
 import rasterio as rio
 from rasterio.plot import plotting_extent
 from rasterio.plot import show
+import geopandas as gpd
 
 import matplotlib.pyplot as plt
 plt.style.reload_library()
@@ -54,6 +56,13 @@ distances_to_fault_crest = np.array([geopy.distance.distance(kilometers=d) for d
 bearings = np.full((283, ), 135)
 # getting centroid crests by translating hypocenters
 fault_crest_centroid = np.array([d.destination(point=p, bearing=s) for d,p,s in zip(distances_to_fault_crest,hypocenters,bearings)])
+#%%
+distances = []
+for idx, value in enumerate(distances_to_fault_crest):
+    d = distances_to_fault_crest[idx]
+    distances.append(str(d))
+
+plt.plot(ruptures.mag, distances)
 
 #%%
 # extract new x,y location
@@ -71,19 +80,52 @@ crest_y = np.array(crest_y)
 crest_z = np.array(Dz)
 
 #%%
-src = rio.open(p.parents[1] / 'faultGeometry' / 'hik_res_0.1.tif')
 
-fig = plt.figure(figsize=(12,6))
-ax0 = fig.add_subplot(1, 1, 1)
-ax0.scatter(lon,lat, c="red", marker='^')
-ax0.scatter(crest_x, crest_y, c='blue')
-# show(src, ax=ax0)
-ctx.add_basemap(ax0, crs=4326)
-# ax0.set_ylim(-40,-39)
-# ax0.set_xlim(171, 180)
+#%%
+# using the X and Y columns, build a dataframe, then the geodataframe
+df_ruptures = pd.DataFrame({'lat': lat, 'lon': lon, 'depth': Dz,
+                            'mag': ruptures['mag'].values})
+
+df_crest = pd.DataFrame({'X': crest_x, 'Y': crest_y, 'Z': crest_z,
+                         'mag': ruptures['mag'].values, 'length': ruptures['length']})
+
+gdf_ruptures = gpd.GeoDataFrame(df_ruptures, geometry=gpd.points_from_xy(df_ruptures.lon, df_ruptures.lat, df_ruptures.depth))
+
+gdf_crest = gpd.GeoDataFrame(df_crest, geometry=gpd.points_from_xy(df_crest.X, df_crest.Y, df_crest.Z))
+
+#%%
+# src = rio.open(p.parents[1] / 'faultGeometry' / 'hik_res_0.1.tif')
+
+fig, axis = plt.subplots(2, figsize=(15, 10), sharex=True)
+
+gdf_ruptures.plot(ax=axis[0], column='mag', marker='^',
+                  cmap='YlOrRd', legend=True, alpha=0.5, edgecolors='black', markersize=50)
+
+gdf_crest.plot(ax=axis[1], column='mag', c=None, cmap='YlOrRd', legend=True,
+               alpha=0.5, edgecolors='black', markersize=50)
+
+# add basemaps
+ctx.add_basemap(axis[0], crs=4326)
+ctx.add_basemap(axis[1], crs=4326)
+
+# add raster hikurangi margin
+# show(src, ax=axis[0])
+
+# Defining custom 'xlim' and 'ylim' values.
+custom_xlim = (171, 180)
+# custom_ylim = (-40, -39)
+
+# Setting the values for all axes.
+plt.setp(axis[0], xlim=custom_xlim) #, ylim=custom_ylim)
+plt.setp(axis[1], xlim=custom_xlim) #, ylim=custom_ylim)
+
+# titles for subplots
+axis[0].title.set_text('Hypocenters')
+axis[1].title.set_text('Rupture crests')
 plt.tight_layout()
-plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=None)
 plt.show()
+#%%
+# 3D plot
 
 # fig = plt.figure(figsize=(12,6))
 # ax1 = fig.add_subplot(1, 1, 1, projection='3d')
@@ -96,9 +138,9 @@ plt.show()
 # ax1.view_init(30, 45)
 # ax1.set_xlim(171, 180)
 
-plt.tight_layout()
-plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=None)
-plt.show()
+# plt.tight_layout()
+# plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=None)
+# plt.show()
 #%%
 crest_df = pd.DataFrame({'lon': crest_x, 'lat': crest_y, 'depth': crest_z, 'mag':ruptures['mag']})
 crest_df.to_csv(p / 'centroid_crest.csv')
