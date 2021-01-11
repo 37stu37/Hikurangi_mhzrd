@@ -57,12 +57,26 @@ bearings = np.full((283, ), 135)
 # getting centroid crests by translating hypocenters
 fault_crest_centroid = np.array([d.destination(point=p, bearing=s) for d,p,s in zip(distances_to_fault_crest,hypocenters,bearings)])
 #%%
+# QC rupture width / magnitude
 distances = []
 for idx, value in enumerate(distances_to_fault_crest):
     d = distances_to_fault_crest[idx]
     distances.append(str(d))
 
-plt.plot(ruptures.mag, distances)
+d_floats = []
+for idx, value in enumerate(distances):
+    d_float = float(distances[idx][:-3])
+    d_floats.append(d_float)
+
+# Strasser - ruptures['width'] = 10**(-1.058 + 0.356 * ruptures['mag'])
+fig = plt.figure(figsize=(8, 5))
+axis = plt.subplot(111)
+axis.scatter(ruptures['mag'], ruptures['width'], c='white', edgecolors='black')
+axis.plot(ruptures['mag'], np.array(d_floats)*2, linewidth=3, c='red', alpha=0.5)
+axis.set_xlabel('magnitude')
+axis.set_ylabel('rupture width km')
+
+plt.show()
 
 #%%
 # extract new x,y location
@@ -79,7 +93,6 @@ crest_x = np.array(crest_x)
 crest_y = np.array(crest_y)
 crest_z = np.array(Dz)
 
-#%%
 
 #%%
 # using the X and Y columns, build a dataframe, then the geodataframe
@@ -105,11 +118,11 @@ gdf_crest.plot(ax=axis[1], column='mag', c=None, cmap='YlOrRd', legend=True,
                alpha=0.5, edgecolors='black', markersize=50)
 
 # add basemaps
-ctx.add_basemap(axis[0], crs=4326)
-ctx.add_basemap(axis[1], crs=4326)
+# ctx.add_basemap(axis[0], crs=4326)
+# ctx.add_basemap(axis[1], crs=4326)
 
 # add raster hikurangi margin
-# show(src, ax=axis[0])
+show(src, ax=axis[0])
 
 # Defining custom 'xlim' and 'ylim' values.
 custom_xlim = (171, 180)
