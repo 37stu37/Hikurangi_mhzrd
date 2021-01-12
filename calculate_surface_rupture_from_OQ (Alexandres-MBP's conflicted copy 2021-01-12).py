@@ -1,6 +1,7 @@
 '''
 calculate the surface rupture from OQ event based PSHA
 '''
+
 #%%
 from geopy.point import Point
 from rasterio.plot import show
@@ -27,7 +28,7 @@ p = Path(Path.cwd().parents[1] / 'BigData_more100MB/Hikurangi/OQ/OQ_Hikurangi_ru
 
 #%%
 # load
-ruptures = pd.read_csv(p / 'ruptures_141.csv')
+ruptures = pd.read_csv(p / 'ruptures_140.csv')
 #%%
 # using Strasser 2010 ("Scaling of the Source Dimensions of Interface and Intraslab Subduction-zone Earthquakes with Moment Magnitude")
 # ruptures['area'] = 10.0 ** (-2.87 + 0.82 * ruptures['mag']) # Wells and Coppersmith 1994
@@ -52,7 +53,7 @@ hypocenters = np.array([geopy.Point(y, x) for y,x in zip(lat, lon)])
 distances_to_fault_crest = np.array([geopy.distance.distance(kilometers=d) for d in Dx])
 # bearing from hypocenter to crest centroid
 # bearings = np.array(180 - (360 - ruptures['strike']))
-bearings = np.full((ruptures.shape[0], ), 135)
+bearings = np.full((283, ), 135)
 # getting centroid crests by translating hypocenters
 fault_crest_centroid = np.array([d.destination(point=p, bearing=s) for d,p,s in zip(distances_to_fault_crest,hypocenters,bearings)])
 #%%
