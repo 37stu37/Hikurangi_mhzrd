@@ -27,7 +27,7 @@ p = Path(Path.cwd().parents[1] / 'BigData_more100MB/Hikurangi/OQ/OQ_Hikurangi_ru
 
 #%%
 # load
-ruptures = pd.read_csv(p / 'ruptures_141.csv')
+ruptures = pd.read_csv(p / 'ruptures_142.csv')
 #%%
 # using Strasser 2010 ("Scaling of the Source Dimensions of Interface and Intraslab Subduction-zone Earthquakes with Moment Magnitude")
 # ruptures['area'] = 10.0 ** (-2.87 + 0.82 * ruptures['mag']) # Wells and Coppersmith 1994
