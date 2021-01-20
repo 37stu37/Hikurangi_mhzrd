@@ -2,20 +2,10 @@
 calculate the surface rupture from OQ event based PSHA
 '''
 #%%
-from geopy.point import Point
-from rasterio.plot import show
-import contextily as ctx
-import os
 from pathlib import Path
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-import geopy
-import geopy.distance
-import rasterio as rio
-from rasterio.plot import plotting_extent
-from rasterio.plot import show
-import geopandas as gpd
 
 import matplotlib.pyplot as plt
 plt.style.reload_library()
@@ -34,6 +24,7 @@ ruptures = pd.read_csv(p / 'ruptures_142.csv')
 ruptures['area'] = 10**(-3.225 + 0.890 * ruptures['mag'])
 ruptures['length'] = 10**(-2.350 + 0.562 * ruptures['mag'])
 ruptures['width'] = 10**(-1.058 + 0.356 * ruptures['mag'])
+ruptures['rake'] = 90
 # calcuate the seismic moment
 ruptures['Mo'] = 10**(1.5*(ruptures['mag']) + 10.7)
 # calculate fault displacement 

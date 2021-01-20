@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "..\\..\\BigData_more100MB\\Hikurangi"
+		},
+		{
+			"path": "../../BigData_more100MB/Hikurangi"
 		}
 	],
 	"settings": {
