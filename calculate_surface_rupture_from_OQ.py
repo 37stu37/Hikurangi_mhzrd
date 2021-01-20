@@ -5,7 +5,7 @@ calculate the surface rupture from OQ event based PSHA
 from pathlib import Path
 import pandas as pd
 import numpy as np
-from tqdm import tqdm
+import re
 
 import matplotlib.pyplot as plt
 plt.style.reload_library()
@@ -14,10 +14,10 @@ plt.style.use(['science','grid', 'no-latex'])
 plt.rcParams.update({'font.size': 15})
 
 p = Path(Path.cwd().parents[1] / 'BigData_more100MB/Hikurangi/OQ/OQ_Hikurangi_runs_outputs/runs_Strasser')
-
+ruptures_file = p / 'ruptures_142.csv'
 #%%
 # load
-ruptures = pd.read_csv(p / 'ruptures_142.csv')
+ruptures = pd.read_csv(ruptures_file)
 #%%
 # using Strasser 2010 ("Scaling of the Source Dimensions of Interface and Intraslab Subduction-zone Earthquakes with Moment Magnitude")
 # ruptures['area'] = 10.0 ** (-2.87 + 0.82 * ruptures['mag']) # Wells and Coppersmith 1994
@@ -34,11 +34,7 @@ ruptures['rigidity'] = 35.961*np.exp(0.0858*ruptures['centroid_depth'])
 ruptures['fault_displacement'] = ruptures['Mo'] / ((ruptures['area']*1e6) * (ruptures['rigidity']*1e8))
 
 #%%
-ruptures.to_csv(p / 'ruptures_142_w_dims.csv')
+ruptures.to_csv(p / f'{ruptures_file.stem}_dims.csv')
 
-#%%
 
-for s in tqdm(range(1000000)):
-    continue
 # %%
-
