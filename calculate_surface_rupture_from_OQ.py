@@ -46,3 +46,8 @@ ruptures['fault_displacement'] = ruptures['Mo'] / ((ruptures['area']*1e6) * (rup
 ruptures.to_csv(p / 'ruptures_142_w_dims.csv')
 
 #%%
+
+for s in tqdm(range(1000000)):
+    continue
+# %%
+
