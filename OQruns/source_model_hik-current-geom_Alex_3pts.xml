@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
+  <!--source_model_hik sz sources from contour files-->
+  <sourceModel name="Seismic Source Model">
+    <complexFaultSource id="0" name="Complex Fault Source" tectonicRegion="Subduction Interface">
+      <complexFaultGeometry>
+        <faultTopEdge>
+          <gml:LineString>
+            <gml:posList>
+                179.950000	-37.562801	5.000000
+                178.690856	-38.953905	5.000000
+                177.150358	-41.406114	5.000000
+                
+            </gml:posList>
+          </gml:LineString>
+        </faultTopEdge>
+
+        <intermediateEdge>
+          <gml:LineString>
+            <gml:posList>
+                179.440464	-37.250000	10.000000
+                177.282728	-40.241431	10.000000
+                176.058887	-42.071927	10.000000
+            </gml:posList>
+          </gml:LineString>
+        </intermediateEdge>
+
+        <intermediateEdge>
+          <gml:LineString>
+            <gml:posList>
+                179.212424	-37.150000	15.000000
+                175.844241	-40.956453	15.000000
+                174.998720	-42.551464	15.000000
+            </gml:posList>
+          </gml:LineString>
+        </intermediateEdge>
+
+        <intermediateEdge>
+          <gml:LineString>
+            <gml:posList>
+                178.947963	-37.109912	20.000000
+                176.661633	-39.718241	20.000000
+                173.196122	-43.051486	20.000000
+            </gml:posList>
+          </gml:LineString>
+        </intermediateEdge>
+
+        <intermediateEdge>
+          <gml:LineString>
+            <gml:posList>
+                178.807308	-37.042198	25.000000
+                177.049817	-39.099426	25.000000
+                172.839265	-42.982395	25.000000
+            </gml:posList>
+          </gml:LineString>
+        </intermediateEdge>
+
+        <intermediateEdge>
+          <gml:LineString>
+            <gml:posList>
+                178.453911	-37.102119	30.000000
+                176.479491	-39.436071	30.000000
+                172.087050	-43.450000	30.000000
+            </gml:posList>
+          </gml:LineString>
+        </intermediateEdge>
+
+        <faultBottomEdge>
+          <gml:LineString>
+            <gml:posList>
+                178.606672	-36.951270	35.000000
+                175.577364	-40.231701	35.000000
+                171.875297	-43.250000	35.000000
+            </gml:posList>
+          </gml:LineString>
+        </faultBottomEdge>
+      </complexFaultGeometry>
+      <magScaleRel>StrasserInterface</magScaleRel>
+      <ruptAspectRatio>1.5</ruptAspectRatio>
+      <truncGutenbergRichterMFD aValue="2.2853" bValue="0.54" minMag="4.0" maxMag="9.0"/>
+      <rake>30.0</rake>
+    </complexFaultSource>
+  </sourceModel>
+</nrml>
